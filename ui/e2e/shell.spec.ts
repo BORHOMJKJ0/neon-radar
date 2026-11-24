@@ -170,14 +170,15 @@ test('downloads the alert evidence as JSON and CSV', async ({ page }) => {
 
   const csvDownload = page.waitForEvent('download')
   await page.getByRole('button', { name: 'Download CSV' }).click()
+  // Checked at once (the notice closes after 5 s); the first notice may still be leaving.
+  const live = page.locator('[data-sonner-toast]:not([data-removed="true"])')
+  await expect(live).toHaveText(['Download started.'])
   const csvFile = await csvDownload
   expect(csvFile.suggestedFilename()).toBe(`${alert.alert_id}-evidence.csv`)
   const csv = readFileSync((await csvFile.path())!, 'utf-8')
   expect(csv).toContain('"Section","Item","Field","Value"')
   expect(csv).toContain(subgraph.nodes[0].id)
   expect(csv).toContain(subgraph.edges[0].id)
-  // One notification says the downloads started; the second replaces the first.
-  await expect(page.locator('[data-sonner-toast]')).toHaveText(['Download started.'])
   expect(external).toEqual([])
 })
 
