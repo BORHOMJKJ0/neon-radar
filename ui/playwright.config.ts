@@ -9,6 +9,8 @@ import { defineConfig, devices } from '@playwright/test'
  */
 export default defineConfig({
   testDir: './e2e',
+  // The notification gate needs its own server (npm run test:notifications:compat).
+  testIgnore: process.env.NR_NOTIFICATIONS_COMPAT ? [] : ['**/notifications-compat.spec.ts'],
   timeout: 30 * 1000,
   expect: { timeout: 10 * 1000 },
   /* Fail on CI if test.only was left in the source. */

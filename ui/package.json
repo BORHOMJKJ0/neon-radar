@@ -11,6 +11,7 @@
     "gen:api": "openapi-typescript ../contracts/openapi/v1.json -o src/api/schema.d.ts",
     "test:unit": "vitest",
     "test:e2e": "playwright test",
+    "test:notifications:compat": "node e2e/notifications-compat.mjs",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "lint": "oxlint . --deny-warnings && eslint . --max-warnings 0 && prettier --check .",
